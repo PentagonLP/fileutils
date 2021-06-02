@@ -2,7 +2,7 @@
 	Fileutils Library for ComputerCraft
 	Author: PentagonLP
 	Version: 1.0
-	Lines of Code: 71; Characters: 2.247
+	Lines of Code: 76; Characters: 2.343
 ]]
 
 --[[ Checks if file exists
@@ -66,6 +66,11 @@ function readData(filepath,createnew)
 	if createnew then
 		return textutils.unserialize(readFile(filepath,textutils.serialize({}):gsub("\n","")))
 	else
-		return textutils.unserialize(readFile(filepath,nil))
+		content = readFile(filepath,nil)
+		if not (content==false) then
+			return textutils.unserialize(readFile(content))
+		else
+			return false
+		end
 	end
 end
