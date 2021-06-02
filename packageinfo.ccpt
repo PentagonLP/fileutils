@@ -1,0 +1,13 @@
+{   
+	name = "Fileutils",
+	comment = "Library to read/write files",
+	author = "PentagonLP",
+	website = "https://github.com/PentagonLP/fileutils/",
+	newestversion = "1.0",
+	install = {
+		url = "https://raw.githubusercontent.com/PentagonLP/fileutils/main/fileutils",
+		filename = "fileutils",
+		type = "library",
+	},
+	dependencies = {},
+}
