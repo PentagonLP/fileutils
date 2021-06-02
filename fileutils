@@ -1,0 +1,71 @@
+--[[ 
+	Fileutils Library for ComputerCraft
+	Author: PentagonLP
+	Version: 1.0
+	Lines of Code: 71; Characters: 2.247
+]]
+
+--[[ Checks if file exists
+	@param String filepath: Filepath to check
+	@return boolean: Does the file exist?
+--]]
+function file_exists(filepath)
+	local f=io.open(filepath,"r")
+	if f~=nil then 
+		io.close(f) 
+		return true 
+	else 
+		return false 
+	end
+end
+
+--[[ Stores a file in a desired location
+	@param String filepath: Filepath where to create file (if file already exists, it gets overwritten)
+	@param String content: Content to store in file
+--]]
+function storeFile(filepath,content)
+	writefile = fs.open(filepath,"w")
+	writefile.write(content)
+	writefile.close()
+end
+
+--[[ Reads a file from a desired location
+	@param String filepath: Filepath to the file to read
+	@param String createnew: (Optional) Content to store in new file and return if file does not exist. Can be nil.
+	@return String|boolean content|error: Content of the file; If createnew is nil and file doesn't exist boolean false is returned
+--]]
+function readFile(filepath,createnew)
+	readfile = fs.open(filepath,"r")
+	if readfile == nil then
+		if not (createnew==nil) then
+			storeFile(filepath,createnew)
+			return createnew
+		else
+			return false
+		end
+	end
+	content = readfile.readAll()
+	readfile.close()
+	return content
+end
+
+--[[ Stores a table in a file
+	@param String filepath: Filepath where to create file (if file already exists, it gets overwritten)
+	@param Table data: Table to store in file
+--]]
+function storeData(filepath,data)
+	storeFile(filepath,textutils.serialize(data):gsub("\n",""))
+end
+
+--[[ Reads a table from a file in a desired location
+	@param String filepath: Filepath to the file to read
+	@param boolean createnew: If true, an empty table is stored in new file and returned if file does not exist.
+	@return Table|boolean content|error: Table thats stored in the file; If createnew is false and file doesn't exist boolean false is returned
+--]]
+function readData(filepath,createnew)
+	if createnew then
+		return textutils.unserialize(readFile(filepath,textutils.serialize({}):gsub("\n","")))
+	else
+		return textutils.unserialize(readFile(filepath,nil))
+	end
+end
