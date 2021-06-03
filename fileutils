@@ -68,7 +68,7 @@ function readData(filepath,createnew)
 	else
 		content = readFile(filepath,nil)
 		if not (content==false) then
-			return textutils.unserialize(readFile(content))
+			return textutils.unserialize(content:gsub("\n",""))
 		else
 			return false
 		end
