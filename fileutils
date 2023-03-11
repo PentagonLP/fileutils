@@ -1,30 +1,15 @@
 --[[ 
 	Fileutils Library for ComputerCraft
-	Author: PentagonLP
+	Authors: PentagonLP, SkyTheCodeMaster
 	Version: 1.0
-	Lines of Code: 76; Characters: 2.343
 ]]
-
---[[ Checks if file exists
-	@param String filepath: Filepath to check
-	@return boolean: Does the file exist?
---]]
-function file_exists(filepath)
-	local f=io.open(filepath,"r")
-	if f~=nil then 
-		io.close(f) 
-		return true 
-	else 
-		return false 
-	end
-end
 
 --[[ Stores a file in a desired location
 	@param String filepath: Filepath where to create file (if file already exists, it gets overwritten)
 	@param String content: Content to store in file
 --]]
 function storeFile(filepath,content)
-	writefile = fs.open(filepath,"w")
+	local writefile = fs.open(filepath,"w")
 	writefile.write(content)
 	writefile.close()
 end
@@ -35,8 +20,8 @@ end
 	@return String|boolean content|error: Content of the file; If createnew is nil and file doesn't exist boolean false is returned
 --]]
 function readFile(filepath,createnew)
-	readfile = fs.open(filepath,"r")
-	if readfile == nil then
+	local readfile = fs.open(filepath,"r")
+	if not readfile then
 		if not (createnew==nil) then
 			storeFile(filepath,createnew)
 			return createnew
@@ -44,7 +29,7 @@ function readFile(filepath,createnew)
 			return false
 		end
 	end
-	content = readfile.readAll()
+	local content = readfile.readAll()
 	readfile.close()
 	return content
 end
@@ -66,7 +51,7 @@ function readData(filepath,createnew)
 	if createnew then
 		return textutils.unserialize(readFile(filepath,textutils.serialize({}):gsub("\n","")))
 	else
-		content = readFile(filepath,nil)
+		local content = readFile(filepath,nil)
 		if not (content==false) then
 			return textutils.unserialize(content:gsub("\n",""))
 		else
